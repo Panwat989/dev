@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f08d8d;
+            padding: 20px;
+        }
+    </style>
+    <center>
+        <h1>Calculator</h1>
+    <p>กรุณากรอกตัวเลข</p>
+    <label for="a">ตัวเลขที่ 1 :</label>
+    <input type="text" id="a" placeholder="เช่น 10 หรือ 3.5">
+    <br><br>
+    <label for="b">ตัวเลขที่ 2 :</label>
+    <input type="text" id="b" placeholder="เช่น 5 หรือ 2.5">
+    <br><br>
+    <button onclick="calculate('add')">+ บวก</button>
+    <button onclick="calculate('subtract')">- ลบ</button>
+    <button onclick="calculate('multiply')">* คูณ</button>
+    <button onclick="calculate('divide')">/ หาร</button>
+    <br><br>
+    <p id="result"></p>
+    <script>
+        async function calculate(operator) {
+            const a = document.getElementById("a").value.trim()
+            const b = document.getElementById("b").value.trim()
+            if (a === "" || b === "") {
+                document.getElementById("result").innerText = "กรุณากรอกตัวเลขทั้งสองช่อง"
+                return
+            }
+            if (isNaN(a) || isNaN(b)) {
+                document.getElementById("result").innerText = "กรุณากรอกเป็นตัวเลขเท่านั้น"
+                return
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/${operator}?a=${a}&b=${b}`)
+                const data = await response.json()
+                if (response.ok) {
+                    document.getElementById("result").innerText = "ผลลัพธ์ : " + data.result
+                } else {
+                    document.getElementById("result").innerText = "Error : " + data.error
+                }
+            } catch (error) {
+                document.getElementById("result").innerText = "ไม่สามารถเชื่อมต่อ server ได้"
+            }
+        }
+    </script>
+    </center>
+</body>
+</html>
