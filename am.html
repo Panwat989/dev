@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f08d8d;
+            padding: 20px;
+        }
+    </style>
+    <center>
+         <h1>👤 Profile Card</h1>
+    <hr>
+    <h2 id="name">แนะนำตัวเอง</h2>
+    <p>ชื่อ : ปัญญ์วัฒน์ สุภาพันธ์ <b id="name"></b></p>
+    <p>ชื่อเล่น : โอม <b id="nickname"></b></p>
+    <p>อายุ : 17 ปี <b id="age"></b></p>
+    <p>งานอดิเรก : เล่นเกม<b id="hobby"></b></p>
+    <hr>
+    <h2>💬 ช่องทางการติดต่อ</h2>
+    <table>
+    <tr>
+        <td><img src="https://i.pinimg.com/vwebp/736x/3c/0b/52/3c0b5296e29c391d50a7580b3e949a34.webp" width="60"></td>
+        <td>ig: Phxnwxt3</td>
+    </tr>
+</table>
+    <table>
+     <tr>
+    <td><img src="https://i.pinimg.com/736x/7b/ed/39/7bed398644d61cae7c4dd853b558a1c9.jpg" width="60"></td>
+        <td>fb: Phanyawat Supaphan</td>
+    </tr>
+    </table>
+    
+    <script>
+        async function loadProfile() {
+            try {
+                const response = await fetch("http://localhost:3000/profile")
+                const data = await response.json()
+                document.getElementById("name").innerText = "👋 ฉันชื่อ " + data.name
+                document.getElementById("nickname").innerText = data.nickname
+                document.getElementById("age").innerText = data.age + " ปี"
+                document.getElementById("hobby").innerText = data.hobby
+            } catch (error) {
+                document.getElementById("name").innerText = "ไม่สามารถโหลดข้อมูลได้"
+            }
+        }
+        async function loadQuote() {
+            try {
+                const response = await fetch("https://api.quotable.io/random")
+                const data = await response.json()
+                document.getElementById("quote").innerText = '"' + data.content + '"'
+                document.getElementById("quote-author").innerText = data.author
+            } catch (error) {
+                document.getElementById("quote").innerText = "ไม่สามารถโหลดได้"
+            }
+        }
+        loadProfile()
+        loadQuote()
+    </script>
+    </center>
+</body>
+</html>
