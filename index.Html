@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+</head>
+<body>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f08d8d;
+        padding: 20px;
+    }
+  </style>
+<center>
+        <h1>BMI Calculator</h1>
+    <p>กรุณากรอกข้อมูลเพื่อคำนวณค่า BMI</p>
+    <label for="weight">น้ำหนัก (กิโลกรัม) :</label>
+    <input type="text" id="weight" placeholder="เช่น 65">
+    <br><br>
+    <label for="height">ส่วนสูง (เซนติเมตร) :</label>
+    <input type="text" id="height" placeholder="เช่น 170">
+    <br><br>
+    <button onclick="calculateBMI()">คำนวณ BMI</button>
+    <br><br>
+    <p id="result"></p>
+    <script>
+        async function calculateBMI() {
+            const weight = document.getElementById("weight").value.trim()
+            const height = document.getElementById("height").value.trim()
+            if (weight === "" || height === "") {
+                document.getElementById("result").innerText = "กรุณากรอกน้ำหนักและส่วนสูง"
+                return
+            }
+            if (isNaN(weight) || isNaN(height)) {
+                document.getElementById("result").innerText = "กรุณากรอกเป็นตัวเลขเท่านั้น"
+                return
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/BMI?weight=${weight}&height=${height}`)
+                const data = await response.json()
+                if (response.ok) {
+                    document.getElementById("result").innerText =
+                        "BMI ของคุณคือ : " + data.BMI + " | ระดับ : " + data.Level
+                } else {
+                    document.getElementById("result").innerText = "Error : " + data.error
+                }
+            } catch (error) {
+                document.getElementById("result").innerText = "ไม่สามารถเชื่อมต่อ server ได้"
+            }
+        }
+    </script>
+</center>
+</body>
+</html>
